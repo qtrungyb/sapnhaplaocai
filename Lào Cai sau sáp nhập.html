@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra cứu sáp nhập hành chính - Tỉnh Lào Cai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease, color 0.2s ease;
+        }
+        
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --gray: #95a5a6;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --highlight: #ffe066;
+            --bg-gradient: linear-gradient(135deg, #1a2980, #26d0ce);
+            --card-bg: #fff;
+            --text: #333;
+            --header-bg: rgba(0, 0, 0, 0.15);
+            --stat-bg: #f8f9fa;
+            --input-bg: #fff;
+            --footer-border: rgba(255, 255, 255, 0.2);
+            --footer-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        body.dark-mode {
+            --primary: #1e2a38;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #2c3e50;
+            --dark: #ecf0f1;
+            --card-bg: #1e2a38;
+            --text: #ecf0f1;
+            --bg-gradient: linear-gradient(135deg, #0d1b2a, #1b3a4b);
+            --header-bg: rgba(0, 0, 0, 0.3);
+            --stat-bg: #2c3e50;
+            --input-bg: #2c3e50;
+            --footer-border: rgba(255, 255, 255, 0.1);
+            --footer-color: rgba(255, 255, 255, 0.7);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+        
+        body {
+            background: var(--bg-gradient);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
+            position: relative;
+            background: var(--header-bg);
+            border-radius: 12px;
+            padding: 30px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+        
+        .search-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .search-container::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            background: var(--input-bg);
+            color: var(--text);
+        }
+        
+        .search-input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2), inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .search-button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .search-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            color: var(--dark);
+            font-weight: 500;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            background: var(--stat-bg);
+            padding: 12px 18px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            flex: 1;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            color: var(--text);
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.5s ease;
+            border-top: 4px solid var(--secondary);
+            position: relative;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+        
+        .card-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .card-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        
+        .old-wards {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+        
+        .old-wards li {
+            padding: 10px 15px;
+            background: var(--stat-bg);
+            border-left: 3px solid var(--secondary);
+            margin-bottom: 8px;
+            border-radius: 0 5px 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            color: var(--text);
+        }
+        
+        .old-wards li:hover {
+            background: rgba(52, 152, 219, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .no-merge {
+            background: rgba(243, 156, 18, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--warning);
+            text-align: center;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        .no-results h3 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            background-color: var(--highlight);
+            font-weight: 600;
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+        
+        footer {
+            text-align: center;
+            color: var(--footer-color);
+            padding: 20px;
+            font-size: 0.9rem;
+            margin-top: 30px;
+            border-top: 1px solid var(--footer-border);
+        }
+        
+        .search-info {
+            color: white;
+            text-align: center;
+            margin: 10px 0 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            display: none;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        
+        .intro-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            color: white;
+            font-size: 1rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes highlightPulse {
+            0% { background-color: var(--highlight); }
+            50% { background-color: #ffd43b; }
+            100% { background-color: var(--highlight); }
+        }
+        
+        .highlight {
+            animation: highlightPulse 1.5s ease-in-out;
+        }
+        
+        @media (max-width: 768px) {
+            .results-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-button {
+                padding: 15px;
+                justify-content: center;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button id="themeToggle" class="theme-toggle">
+                <i id="themeIcon" class="fas fa-moon"></i>
+            </button>
+            <h1><i class="fas fa-map-marked-alt"></i> TRA CỨU SÁP NHẬP HÀNH CHÍNH TỈNH LÀO CAI</h1>
+            <p>Thông tin các phường, xã trước và sau sáp nhập</p>
+        </header>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="Nhập tên phường, xã cần tra cứu...">
+                <button id="searchButton" class="search-button"><i class="fas fa-search"></i> Tìm kiếm</button>
+            </div>
+            <div class="stats">
+                <div class="stat-item"><i class="fas fa-city"></i> Tỉnh/Thành phố: <span id="provinceCount">1</span></div>
+                <div class="stat-item"><i class="fas fa-map-marker-alt"></i> Phường/Xã mới: <span id="newWardCount">99</span></div>
+                <div class="stat-item"><i class="fas fa-history"></i> Phường/Xã cũ: <span id="oldWardCount">318</span></div>
+            </div>
+        </div>
+        
+        <div class="search-info" id="searchInfo">
+            <i class="fas fa-search"></i> Đang hiển thị <span id="resultCount">0</span> kết quả cho "<span id="searchTerm"></span>"
+        </div>
+        
+        <div class="results-container" id="resultsContainer">
+            <!-- Kết quả sẽ được hiển thị ở đây -->
+        </div>
+
+    </div>
+
+    <script>
+        // Dữ liệu sáp nhập (cập nhật với 318 xã/phường cũ)
+        const mergeData = [
+            { province: "Lào Cai", newWard: "A Mú Sung", oldWards: ["Xã Nậm Chạc", "Xã A Mú Sung"] },
+            { province: "Lào Cai", newWard: "Âu Lâu", oldWards: ["Phường Hợp Minh", "Xã Giới Phiên", "Xã Minh Quân", "Xã Âu Lâu"] },
+            { province: "Lào Cai", newWard: "Bản Hồ", oldWards: ["Xã Thanh Bình (thị xã Sa Pa)", "Xã Bản Hồ"] },
+            { province: "Lào Cai", newWard: "Bản Lầu", oldWards: ["Xã Bản Sen", "Xã Lùng Vai", "Xã Bản Lầu"] },
+            { province: "Lào Cai", newWard: "Bản Liền", oldWards: ["Xã Nậm Khánh", "Xã Bản Liền"] },
+            { province: "Lào Cai", newWard: "Bản Xèo", oldWards: ["Xã Pa Cheo", "Xã Mường Vi", "Xã Bản Xèo"] },
+            { province: "Lào Cai", newWard: "Bảo Ái", oldWards: ["Xã Cảm Ân", "Xã Mông Sơn", "Xã Tân Nguyên", "Xã Bảo Ái"] },
+            { province: "Lào Cai", newWard: "Bảo Hà", oldWards: ["Xã Kim Sơn", "Xã Cam Cọn", "Xã Tân An", "Xã Tân Thượng", "Xã Bảo Hà"] },
+            { province: "Lào Cai", newWard: "Bảo Nhai", oldWards: ["Xã Nậm Đét", "Xã Cốc Ly", "Xã Bảo Nhai"] },
+            { province: "Lào Cai", newWard: "Bảo Thắng", oldWards: ["Thị trấn Phố Lu", "Xã Sơn Hà", "Xã Sơn Hải", "Xã Thái Niên"] },
+            { province: "Lào Cai", newWard: "Bảo Yên", oldWards: ["Thị trấn Phố Ràng", "Xã Yên Sơn", "Xã Lương Sơn", "Xã Xuân Thượng"] },
+            { province: "Lào Cai", newWard: "Bát Xát", oldWards: ["Thị trấn Bát Xát", "Xã Bản Vược", "Xã Bản Qua", "Xã Phìn Ngan", "Xã Quang Kim"] },
+            { province: "Lào Cai", newWard: "Bắc Hà", oldWards: ["Thị trấn Bắc Hà", "Xã Na Hối", "Xã Thải Giàng Phố", "Xã Bản Phố", "Xã Hoàng Thu Phố", "Xã Nậm Mòn"] },
+            { province: "Lào Cai", newWard: "Cam Đường", oldWards: ["Phường Nam Cường (thành phố Lào Cai)", "Phường Xuân Tăng", "Phường Pom Hán", "Phường Bắc Cường", "Phường Bắc Lệnh", "Phường Bình Minh", "Xã Cam Đường"] },
+            { province: "Lào Cai", newWard: "Cảm Nhân", oldWards: ["Xã Xuân Long", "Xã Ngọc Chấn", "Xã Cảm Nhân"] },
+            { province: "Lào Cai", newWard: "Cao Sơn", oldWards: ["Xã Lùng Khấu Nhin", "Xã Tả Thàng", "Xã La Pan Tẩn", "Xã Cao Sơn"] },
+            { province: "Lào Cai", newWard: "Cát Thịnh", oldWards: [] },
+            { province: "Lào Cai", newWard: "Cầu Thia", oldWards: ["Phường Cầu Thia", "Xã Thanh Lương", "Xã Thạch Lương", "Xã Phúc Sơn", "Xã Hạnh Sơn"] },
+            { province: "Lào Cai", newWard: "Chấn Thịnh", oldWards: ["Xã Tân Thịnh (huyện Văn Chấn)", "Xã Đại Lịch", "Xã Chấn Thịnh"] },
+            { province: "Lào Cai", newWard: "Châu Quế", oldWards: ["Xã Châu Quế Thượng", "Xã Châu Quế Hạ"] },
+            { province: "Lào Cai", newWard: "Chế Tạo", oldWards: [] },
+            { province: "Lào Cai", newWard: "Chiềng Ken", oldWards: ["Xã Nậm Tha", "Xã Chiềng Ken"] },
+            { province: "Lào Cai", newWard: "Cốc Lầu", oldWards: ["Xã Nậm Lúc", "Xã Bản Cái", "Xã Cốc Lầu"] },
+            { province: "Lào Cai", newWard: "Cốc San", oldWards: ["Xã Đồng Tuyển", "Xã Tòng Sành", "Xã Cốc San"] },
+            { province: "Lào Cai", newWard: "Dền Sáng", oldWards: ["Xã Dền Thàng", "Xã Sàng Ma Sáo", "Xã Dền Sáng"] },
+            { province: "Lào Cai", newWard: "Dương Quỳ", oldWards: ["Xã Thẳm Dương", "Xã Dương Quỳ"] },
+            { province: "Lào Cai", newWard: "Đông Cuông", oldWards: ["Xã Quang Minh", "Xã An Bình", "Xã Đông An", "Xã Đông Cuông"] },
+            { province: "Lào Cai", newWard: "Gia Hội", oldWards: ["Xã Nậm Búng", "Xã Nậm Lành", "Xã Gia Hội"] },
+            { province: "Lào Cai", newWard: "Gia Phú", oldWards: ["Xã Xuân Giao", "Xã Thống Nhất", "Xã Gia Phú"] },
+            { province: "Lào Cai", newWard: "Hạnh Phúc", oldWards: ["Thị trấn Trạm Tấu", "Xã Bản Công", "Xã Hát Lừu", "Xã Xà Hồ"] },
+            { province: "Lào Cai", newWard: "Hợp Thành", oldWards: ["Xã Tả Phời", "Xã Hợp Thành"] },
+            { province: "Lào Cai", newWard: "Hưng Khánh", oldWards: ["Xã Hồng Ca", "Xã Hưng Khánh"] },
+            { province: "Lào Cai", newWard: "Khánh Hòa", oldWards: ["Xã Tô Mậu", "Xã An Lạc", "Xã Động Quan", "Xã Khánh Hòa"] },
+            { province: "Lào Cai", newWard: "Khánh Yên", oldWards: ["Xã Khánh Yên Trung", "Xã Liêm Phú", "Xã Khánh Yên Hạ"] },
+            { province: "Lào Cai", newWard: "Khao Mang", oldWards: ["Xã Hồ Bốn", "Xã Khao Mang"] },
+            { province: "Lào Cai", newWard: "Lào Cai", oldWards: ["Phường Duyên Hải", "Phường Cốc Lếu", "Phường Kim Tân", "Phường Lào Cai", "Xã Vạn Hòa", "Xã Bản Phiệt"] },
+            { province: "Lào Cai", newWard: "Lao Chải", oldWards: [] },
+            { province: "Lào Cai", newWard: "Lâm Giang", oldWards: ["Xã Lang Thíp", "Xã Lâm Giang"] },
+            { province: "Lào Cai", newWard: "Lâm Thượng", oldWards: ["Xã Mai Sơn", "Xã Khánh Thiện", "Xã Tân Phượng", "Xã Lâm Thượng"] },
+            { province: "Lào Cai", newWard: "Liên Sơn", oldWards: ["Thị trấn Nông trường Liên Sơn", "Xã Sơn A", "Xã Nghĩa Phúc"] },
+            { province: "Lào Cai", newWard: "Lục Yên", oldWards: ["Thị trấn Yên Thế", "Xã Minh Xuân", "Xã Yên Thắng", "Xã Liễu Đô"] },
+            { province: "Lào Cai", newWard: "Lùng Phình", oldWards: ["Xã Tả Van Chư", "Xã Lùng Phình", "Xã Lùng Thẩn"] },
+            { province: "Lào Cai", newWard: "Lương Thịnh", oldWards: ["Xã Hưng Thịnh", "Xã Lương Thịnh"] },
+            { province: "Lào Cai", newWard: "Mậu A", oldWards: ["Thị trấn Mậu A", "Xã Yên Thái", "Xã An Thịnh", "Xã Mậu Đông", "Xã Ngòi A"] },
+            { province: "Lào Cai", newWard: "Minh Lương", oldWards: ["Xã Nậm Xây", "Xã Minh Lương"] },
+            { province: "Lào Cai", newWard: "Mỏ Vàng", oldWards: ["Xã An Lương", "Xã Mỏ Vàng"] },
+            { province: "Lào Cai", newWard: "Mù Cang Chải", oldWards: ["Thị trấn Mù Cang Chải", "Xã Kim Nọi", "Xã Mồ Dề", "Xã Chế Cu Nha"] },
+            { province: "Lào Cai", newWard: "Mường Bo", oldWards: ["Xã Liên Minh", "Xã Mường Bo"] },
+            { province: "Lào Cai", newWard: "Mường Hum", oldWards: ["Xã Nậm Pung", "Xã Trung Lèng Hồ", "Xã Mường Hum"] },
+            { province: "Lào Cai", newWard: "Mường Khương", oldWards: ["Thị trấn Mường Khương", "Xã Thanh Bình (huyện Mường Khương)", "Xã Nậm Chảy", "Xã Tung Chung Phố", "Xã Nấm Lư"] },
+            { province: "Lào Cai", newWard: "Mường Lai", oldWards: ["Xã An Phú", "Xã Vĩnh Lạc", "Xã Minh Tiến", "Xã Mường Lai"] },
+            { province: "Lào Cai", newWard: "Nam Cường", oldWards: ["Phường Nam Cường (thành phố Yên Bái)", "Xã Minh Bảo", "Xã Tuy Lộc", "Xã Cường Thịnh"] },
+            { province: "Lào Cai", newWard: "Nậm Chày", oldWards: ["Xã Dần Thàng", "Xã Nậm Chày"] },
+            { province: "Lào Cai", newWard: "Nậm Có", oldWards: [] },
+            { province: "Lào Cai", newWard: "Nậm Xé", oldWards: [] },
+            { province: "Lào Cai", newWard: "Nghĩa Đô", oldWards: ["Xã Tân Tiến", "Xã Vĩnh Yên", "Xã Nghĩa Đô"] },
+            { province: "Lào Cai", newWard: "Nghĩa Lộ", oldWards: ["Phường Tân An", "Phường Pú Trạng", "Xã Nghĩa An", "Xã Nghĩa Sơn"] },
+            { province: "Lào Cai", newWard: "Nghĩa Tâm", oldWards: ["Xã Bình Thuận", "Xã Minh An", "Xã Nghĩa Tâm"] },
+            { province: "Lào Cai", newWard: "Ngũ Chỉ Sơn", oldWards: [] },
+            { province: "Lào Cai", newWard: "Pha Long", oldWards: ["Xã Tả Ngài Chồ", "Xã Dìn Chin", "Xã Tả Gia Khâu", "Xã Pha Long"] },
+            { province: "Lào Cai", newWard: "Phình Hồ", oldWards: ["Xã Làng Nhì", "Xã Bản Mù", "Xã Phình Hồ"] },
+            { province: "Lào Cai", newWard: "Phong Dụ Hạ", oldWards: ["Xã Xuân Tầm", "Xã Phong Dụ Hạ"] },
+            { province: "Lào Cai", newWard: "Phong Dụ Thượng", oldWards: [] },
+            { province: "Lào Cai", newWard: "Phong Hải", oldWards: ["Thị trấn Nông trường Phong Hải", "Xã Bản Cầm"] },
+            { province: "Lào Cai", newWard: "Phúc Khánh", oldWards: ["Xã Việt Tiến", "Xã Phúc Khánh"] },
+            { province: "Lào Cai", newWard: "Phúc Lợi", oldWards: ["Xã Trúc Lâu", "Xã Trung Tâm", "Xã Phúc Lợi"] },
+            { province: "Lào Cai", newWard: "Púng Luông", oldWards: ["Xã Nậm Khắt", "Xã La Pán Tẩn", "Xã Dế Xu Phình", "Xã Púng Luông"] },
+            { province: "Lào Cai", newWard: "Quy Mông", oldWards: ["Xã Kiên Thành", "Xã Y Can", "Xã Quy Mông"] },
+            { province: "Lào Cai", newWard: "Sa Pa", oldWards: ["Phường Hàm Rồng", "Phường Ô Quý Hồ", "Phường Sa Pả", "Phường Cầu Mây", "Phường Phan Si Păng", "Phường Sa Pa"] },
+            { province: "Lào Cai", newWard: "Si Ma Cai", oldWards: ["Thị trấn Si Ma Cai", "Xã Sán Chải", "Xã Nàn Sán", "Xã Cán Cấu", "Xã Quan Hồ Thẩn"] },
+            { province: "Lào Cai", newWard: "Sín Chéng", oldWards: ["Xã Bản Mế", "Xã Thào Chư Phìn", "Xã Nàn Sín", "Xã Sín Chéng"] },
+            { province: "Lào Cai", newWard: "Sơn Lương", oldWards: ["Xã Nậm Mười", "Xã Sùng Đô", "Xã Suối Quyền", "Xã Sơn Lương"] },
+            { province: "Lào Cai", newWard: "Tả Củ Tỷ", oldWards: ["Xã Lùng Cải", "Xã Tả Củ Tỷ"] },
+            { province: "Lào Cai", newWard: "Tả Phìn", oldWards: ["Xã Trung Chải", "Xã Tả Phìn"] },
+            { province: "Lào Cai", newWard: "Tả Van", oldWards: ["Xã Hoàng Liên", "Xã Mường Hoa", "Xã Tả Van"] },
+            { province: "Lào Cai", newWard: "Tà Xi Láng", oldWards: [] },
+            { province: "Lào Cai", newWard: "Tằng Loỏng", oldWards: ["Thị trấn Tằng Loỏng", "Xã Phú Nhuận"] },
+            { province: "Lào Cai", newWard: "Tân Hợp", oldWards: ["Xã Đại Sơn", "Xã Nà Hẩu", "Xã Tân Hợp"] },
+            { province: "Lào Cai", newWard: "Tân Lĩnh", oldWards: ["Xã Minh Chuẩn", "Xã Tân Lập", "Xã Phan Thanh", "Xã Khai Trung", "Xã Tân Lĩnh"] },
+            { province: "Lào Cai", newWard: "Thác Bà", oldWards: ["Thị trấn Thác Bà", "Xã Vũ Linh", "Xã Bạch Hà", "Xã Hán Đà", "Xã Vĩnh Kiên", "Xã Đại Minh"] },
+            { province: "Lào Cai", newWard: "Thượng Bằng La", oldWards: ["Thị trấn Nông trường Trần Phú", "Xã Thượng Bằng La"] },
+            { province: "Lào Cai", newWard: "Thượng Hà", oldWards: ["Xã Điện Quan", "Xã Minh Tân", "Xã Thượng Hà"] },
+            { province: "Lào Cai", newWard: "Trạm Tấu", oldWards: ["Xã Pá Lau", "Xã Pá Hu", "Xã Túc Đán", "Xã Trạm Tấu"] },
+            { province: "Lào Cai", newWard: "Trấn Yên", oldWards: ["Thị trấn Cổ Phúc", "Xã Báo Đáp", "Xã Tân Đồng", "Xã Thành Thịnh", "Xã Hòa Cuông", "Xã Minh Quán"] },
+            { province: "Lào Cai", newWard: "Trịnh Tường", oldWards: ["Xã Cốc Mỳ", "Xã Trịnh Tường"] },
+            { province: "Lào Cai", newWard: "Trung Tâm", oldWards: ["Phường Trung Tâm", "Xã Phù Nham", "Xã Nghĩa Lợi", "Xã Nghĩa Lộ"] },
+            { province: "Lào Cai", newWard: "Tú Lệ", oldWards: ["Xã Cao Phạ", "Xã Tú Lệ"] },
+            { province: "Lào Cai", newWard: "Văn Bàn", oldWards: ["Thị trấn Khánh Yên", "Xã Khánh Yên Thượng", "Xã Sơn Thuỷ", "Xã Làng Giàng", "Xã Hòa Mạc"] },
+            { province: "Lào Cai", newWard: "Văn Chấn", oldWards: ["Thị trấn Sơn Thịnh", "Xã Đồng Khê", "Xã Suối Bu", "Xã Suối Giàng"] },
+            { province: "Lào Cai", newWard: "Văn Phú", oldWards: ["Phường Yên Thịnh", "Xã Tân Thịnh (thành phố Yên Bái)", "Xã Văn Phú", "Xã Phú Thịnh"] },
+            { province: "Lào Cai", newWard: "Việt Hồng", oldWards: ["Xã Việt Cường", "Xã Vân Hội", "Xã Việt Hồng"] },
+            { province: "Lào Cai", newWard: "Võ Lao", oldWards: ["Xã Nậm Mả", "Xã Nậm Dạng", "Xã Võ Lao"] },
+            { province: "Lào Cai", newWard: "Xuân Ái", oldWards: ["Xã Đại Phác", "Xã Yên Phú", "Xã Yên Hợp", "Xã Viễn Sơn", "Xã Xuân Ái"] },
+            { province: "Lào Cai", newWard: "Xuân Hòa", oldWards: ["Xã Tân Dương", "Xã Xuân Hòa"] },
+            { province: "Lào Cai", newWard: "Xuân Quang", oldWards: ["Xã Phong Niên", "Xã Trì Quang", "Xã Xuân Quang"] },
+            { province: "Lào Cai", newWard: "Y Tý", oldWards: ["Xã A Lù", "Xã Y Tý"] },
+            { province: "Lào Cai", newWard: "Yên Bái", oldWards: ["Phường Đồng Tâm", "Phường Yên Ninh", "Phường Minh Tân", "Phường Nguyễn Thái Học", "Phường Hồng Hà"] },
+            { province: "Lào Cai", newWard: "Yên Bình", oldWards: ["Thị trấn Yên Bình", "Xã Tân Hương", "Xã Thịnh Hưng", "Xã Đại Đồng"] },
+            { province: "Lào Cai", newWard: "Yên Thành", oldWards: ["Xã Phúc Ninh", "Xã Mỹ Gia", "Xã Xuân Lai", "Xã Phúc An", "Xã Yên Thành"] }
+        ];
+
+        // Highlight văn bản dựa trên từ khóa
+        function highlightText(text, keyword) {
+            if (!keyword || keyword.trim() === '') return text;
+            
+            const regex = new RegExp(`(${escapeRegExp(keyword)})`, 'gi');
+            return text.replace(regex, '<mark class="highlight">$1</mark>');
+        }
+
+        // Escape ký tự đặc biệt cho regex
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Hiển thị dữ liệu với highlight
+        function displayData(data, keyword = '') {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const searchInfo = document.getElementById('searchInfo');
+            const resultCount = document.getElementById('resultCount');
+            const searchTerm = document.getElementById('searchTerm');
+            
+            resultsContainer.innerHTML = '';
+            
+            if (data.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-map-marked"></i>
+                        <h3>Không tìm thấy kết quả</h3>
+                        <p>Hãy thử tìm kiếm với từ khóa khác</p>
+                    </div>
+                `;
+                searchInfo.style.display = 'none';
+                return;
+            }
+            
+            // Hiển thị thông tin tìm kiếm
+            searchInfo.style.display = 'block';
+            resultCount.textContent = data.length;
+            searchTerm.textContent = keyword;
+            
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                let oldWardsHTML = '';
+                if (item.oldWards.length > 0) {
+                    oldWardsHTML = `
+                        <div class="section-title">
+                            <i class="fas fa-history"></i> Trước sáp nhập
+                        </div>
+                        <ul class="old-wards">
+                            ${item.oldWards.map(ward => {
+                                const highlightedWard = keyword ? highlightText(ward, keyword) : ward;
+                                return `<li><i class="fas fa-map-marker-alt"></i> ${highlightedWard}</li>`;
+                            }).join('')}
+                        </ul>
+                    `;
+                } else {
+                    oldWardsHTML = `
+                        <div class="no-merge">
+                            <i class="fas fa-info-circle"></i> Không sáp nhập
+                        </div>
+                    `;
+                }
+                
+                const highlightedNewWard = keyword ? highlightText(item.newWard, keyword) : item.newWard;
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">${highlightedNewWard}</h3>
+                        <div class="card-subtitle"><i class="fas fa-map"></i> ${item.province}</div>
+                        <div class="card-badge">${item.oldWards.length} xã/phường</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="section-title">
+                            <i class="fas fa-map-signs"></i> Sau sáp nhập
+                        </div>
+                        <p><strong>${highlightedNewWard}</strong> (đơn vị hành chính mới)</p>
+                        ${oldWardsHTML}
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(card);
+            });
+        }
+        
+
+        function searchWards(keyword) {
+            keyword = keyword.toLowerCase().trim();
+            
+            if (!keyword) {
+                return mergeData;
+            }
+            
+            return mergeData.filter(item => {
+                // Tìm theo tên mới
+                if (item.newWard.toLowerCase().includes(keyword)) {
+                    return true;
+                }
+                
+                // Tìm theo tên cũ
+                for (const oldWard of item.oldWards) {
+                    if (oldWard.toLowerCase().includes(keyword)) {
+                        return true;
+                    }
+                }
+                
+                return false;
+            });
+        }
+        
+  
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            
+            function performSearch() {
+                const keyword = searchInput.value;
+                const results = searchWards(keyword);
+                displayData(results, keyword);
+            }
+            
+            searchInput.addEventListener('input', performSearch);
+            searchButton.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+        }
+        
+        // Chức năng chuyển đổi chế độ sáng/tối
+        function setupThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const body = document.body;
+            
+            // Kiểm tra chế độ đã lưu trong localStorage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                
+                if (body.classList.contains('dark-mode')) {
+                    themeIcon.className = 'fas fa-sun';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    themeIcon.className = 'fas fa-moon';
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        }
+        
+        function initApp() {
+            // Luôn hiển thị 318 cho số lượng phường/xã cũ
+            document.getElementById('oldWardCount').textContent = 318;
+            document.getElementById('newWardCount').textContent = mergeData.length;
+            
+            displayData(mergeData);
+            
+            // Thiết lập tìm kiếm
+            setupSearch();
+            
+            // Thiết lập chuyển đổi chế độ sáng/tối
+            setupThemeToggle();
+        }
+        
+        // Khởi chạy ứng dụng khi trang tải xong
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
